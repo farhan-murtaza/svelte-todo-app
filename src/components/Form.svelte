@@ -1,4 +1,5 @@
 <script>
+	import FaPlus from 'svelte-icons/fa/FaPlus.svelte';
 	import { createEventDispatcher } from 'svelte';
 	const dispatch = createEventDispatcher();
 
@@ -11,6 +12,7 @@
 		input.focus();
 	}
 	function handleAddTodo() {
+		if (!inputText) return;
 		dispatch('addtodo', {
 			title: inputText
 		});
@@ -18,7 +20,7 @@
 </script>
 
 <!-- Add form at bottom -->
-<div class="app-form">
+<form class="app-form" on:submit|preventDefault={handleAddTodo}>
 	<input
 		bind:this={input}
 		placeholder="Add Todo.."
@@ -27,8 +29,8 @@
 		name=""
 		bind:value={inputText}
 	/>
-	<button class="btn" on:click|preventDefault={handleAddTodo}>Enter</button>
-</div>
+	<button type="submit" class="btn"><FaPlus /></button>
+</form>
 
 <style>
 	.app-form {
@@ -62,7 +64,8 @@
 	}
 
 	.btn {
-		color: inherit;
+		width: 40px;
+		color: #fff;
 		cursor: pointer;
 		font-size: 15px;
 		padding: 10px 12px;

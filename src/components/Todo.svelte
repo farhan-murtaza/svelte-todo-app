@@ -1,7 +1,11 @@
 <script>
 	import { fly } from 'svelte/transition';
 	import FaRegTrashAlt from 'svelte-icons/fa/FaRegTrashAlt.svelte';
-	import { createEventDispatcher } from 'svelte';
+	import { createEventDispatcher, onDestroy, onMount } from 'svelte';
+
+	onMount(() => {
+		console.log('Mounted');
+	});
 
 	export let id;
 	export let itemTitle;
@@ -9,10 +13,11 @@
 
 	const dispatch = createEventDispatcher();
 
-	function handleToggle(id) {
+	function handleToggleTodo(id, value) {
 		console.log('Clicked complete!', id);
 		dispatch('toggletodo', {
-			id
+			id,
+			value
 		});
 	}
 
@@ -29,22 +34,28 @@
 >
 	<span>
 		<input
+			on:input={(event) => {
+				event.currentTarget.checked = completed;
+				handleToggleTodo(id, !completed);
+			}}
 			class="btn btn-done"
 			type="checkbox"
 			checked={completed}
-			on:click={() => handleToggle(id)}
 		/>
 		<span class="title">{itemTitle}</span>
 	</span>
 
-	<span class="btn icon" on:click={() => handleDeleteTodo(id)}>
-		<FaRegTrashAlt />
-	</span>
+	<button
+		type="button"
+		aria-label="Remove Todo: {itemTitle}"
+		class="btn icon"
+		on:click={() => handleDeleteTodo(id)}
+		><span><FaRegTrashAlt /></span>
+	</button>
 </li>
 
 <style>
 	.btn {
-		color: inherit;
 		cursor: pointer;
 		font-size: 15px;
 		padding: 10px 12px;
@@ -62,7 +73,7 @@
 		outline: none;
 	}
 	.icon {
-		width: 12px;
+		width: 40px;
 		color: yellow;
 	}
 	.list-item-view {

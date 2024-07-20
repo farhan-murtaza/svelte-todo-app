@@ -6,17 +6,21 @@
 
 <!-- List of actual todos -->
 <div class="app-body">
-	<ul>
-		{#each todos as todo}
-			<Todo
-				id={todo.id}
-				itemTitle={todo.title}
-				completed={todo.completed}
-				on:completed
-				on:deletetodo
-			/>
-		{/each}
-	</ul>
+	{#if todos.length === 0}
+		<p class="app-body__empty">No todos Yet</p>
+	{:else}
+		<ul>
+			{#each todos as todo}
+				<Todo
+					id={todo.id}
+					itemTitle={todo.title}
+					completed={todo.completed}
+					on:deletetodo
+					on:toggletodo
+				/>
+			{/each}
+		</ul>
+	{/if}
 </div>
 
 <style>
@@ -29,8 +33,19 @@
 
 	.app-body {
 		flex-grow: 1;
-		max-height: 600px;
-		overflow-x: hidden;
+		max-height: 400px;
+		/* overflow-x: hidden; */
+		scrollbar-gutter: none;
+		-ms-overflow-style: none; /* IE and Edge */
+		scrollbar-width: none; /* Firefox */
 		overflow: hidden;
+		overflow-y: scroll;
+	}
+	.app-body__empty {
+		text-align: center;
+		margin: 45% auto;
+		width: 50%;
+		font-size: 1.7rem;
+		color: #fff;
 	}
 </style>
