@@ -3,7 +3,13 @@
 	const dispatch = createEventDispatcher();
 
 	export let inputText = '';
-
+	let input;
+	export function clearInput() {
+		inputText = '';
+	}
+	export function focusInput() {
+		input.focus();
+	}
 	function handleAddTodo() {
 		dispatch('addtodo', {
 			title: inputText
@@ -13,7 +19,14 @@
 
 <!-- Add form at bottom -->
 <div class="app-form">
-	<input placeholder="Add Todo.." type="text" class="input-text" name="" bind:value={inputText} />
+	<input
+		bind:this={input}
+		placeholder="Add Todo.."
+		type="text"
+		class="input-text"
+		name=""
+		bind:value={inputText}
+	/>
 	<button class="btn" on:click|preventDefault={handleAddTodo}>Enter</button>
 </div>
 
